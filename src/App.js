@@ -26,42 +26,42 @@ const theme = createMuiTheme({
 function App() {
   const [dados, setDados] = useState([]);
   const [cepEntrada, setCepEntrada] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const [buscou, setBuscou] = useState(false);
-  const [isOk, setIsOk] = useState(true);
+  const [carregando, setCarregando] = useState(false);
+  const [final, setFinal] = useState(false);
+  const [inicio, setInicio] = useState(true);
   const handleSubmit = async () => {
     try {
-      setIsLoading(true);
+      setCarregando(true);
 
-      const response = await cep(cepEntrada);
+      const resposta = await cep(cepEntrada);
 
       const cepsDados = dados;
 
       cepsDados.push({
-        cep: response.cep,
-        rua: response.street,
-        cidade: response.city,
-        estado: response.state,
+        cep: resposta.cep,
+        rua: resposta.street,
+        cidade: resposta.city,
+        estado: resposta.state,
       });
 
-      setBuscou(true);
+      setFinal(true);
 
       setDados(cepsDados);
     } catch (error) {
-      setBuscou(true);
-      setIsOk(false);
+      setFinal(true);
+      setInicio(false);
     } finally {
-      setIsLoading(false);
+      setCarregando(false);
     }
   };
 
   const handleBack = async () => {
-    setBuscou(false);
-    setIsOk(true);
+    setFinal(false);
+    setInicio(true);
   };
 
-  if (buscou)
-    if (!isOk)
+  if (final)
+    if (!inicio)
       return (
         <div className="App">
           <div className="App-header">
@@ -69,7 +69,7 @@ function App() {
               <Grid container spacing={4}>
                 <Grid item xs={12}>
                   <Typography variant="h4">
-                    Desculpe, ocorreu um erro na busca =(
+                    Ocorreu um erro na busca
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -77,7 +77,7 @@ function App() {
                     variant="contained"
                     color="primary"
                     onClick={handleBack}
-                    disabled={isLoading}
+                    disabled={carregando}
                   >
                     Tentar novamente
                   </Button>
@@ -112,7 +112,7 @@ function App() {
                     variant="contained"
                     color="primary"
                     onClick={handleBack}
-                    disabled={isLoading}
+                    disabled={carregando}
                   >
                     Fazer outra Busca
                   </Button>
@@ -146,14 +146,14 @@ function App() {
                     variant="contained"
                     color="primary"
                     onClick={handleSubmit}
-                    disabled={isLoading}
+                    disabled={carregando}
                   >
                     Buscar
                   </Button>
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                {isLoading && <CircularProgress />}
+                {carregando && <CircularProgress />}
               </Grid>
             </Grid>
           </MuiThemeProvider>
