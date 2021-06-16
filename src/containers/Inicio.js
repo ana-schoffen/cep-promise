@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import cep from "cep-promise";
+import api from "../api";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import {
   FormControl,
@@ -18,7 +19,7 @@ function Inicio(props) {
       props.setStatus("consulta");
 
       setLoading(true);
-      const response = await cep(cepEntrada);
+      const response = await api.searchCep(cepEntrada);
       setCepEntrada("");
 
       props.setDados({
