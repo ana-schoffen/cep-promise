@@ -1,10 +1,20 @@
-function searchCep(item) {
-    return fetch('http://localhost:8090/itens', {
+function getCeps() {
+    return fetch('http://localhost:8090/ceps')
+        .then(res => res.json());
+}
+
+function createCep(cep) {
+    return fetch('http://localhost:8090/ceps', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(item)
-    }).then(r => r.json());
+        body: JSON.stringify(cep)
+    }).then(res => res.json());
 }
-/*fetch('http://localhost:8090/itens')
-        .then(r => r.json());*/
-export default { searchCep }
+
+function searchCep(cep) {
+    return fetch(`http://localhost:8090/ceps/${cep}`, {
+        method: "GET"
+    }).then(res => res.json());
+}
+
+export default { getCeps, createCep, searchCep }
